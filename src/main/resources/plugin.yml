@@ -1,0 +1,24 @@
+name: LuckyJump
+version: ${project.version}
+main: de.pongy.luckyjump.LuckyJump
+api-version: 1.16
+authors: [ pongy20 ]
+description: A Minigame created for CommunityHome.eu
+website: communityhome.eu
+commands:
+  start:
+    description: Command to force start a LuckyJump Game
+    usage: /start <seconds>
+    permission: luckyjump.start
+  lobby:
+    description: Command to change settings of lobby
+    usage: /lobby
+    permission: luckyjump.admin
+  configure:
+    description: Command to configure LuckyJump
+    usage: /configure
+    permission: luckyjump.admin
+  setspawn:
+    description: Command to set the two different spawn points
+    usage: /setspawn <1/2>
+    permission: luckyjump.admin
