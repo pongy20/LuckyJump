@@ -3,10 +3,11 @@ package de.pongy.luckyjump.stats;
 import de.pongy.luckyjump.sql.SQL;
 import org.bukkit.Bukkit;
 
+import javax.xml.transform.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
+import java.util.*;
 
 /**
  *  Table Structure: LJStats
@@ -101,11 +102,31 @@ public class StatsSQL {
                 int jumps = result.getInt("jumps");
                 int checkpointsHit = result.getInt("checkpointsHit");
                 int fellOff = result.getInt("fellOff");
-                Stats stats = new Stats(playername, games, wins, checkpointsHit, fellOff, jumps);
-                return stats;
+                return new Stats(playername, games, wins, checkpointsHit, fellOff, jumps);
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * Gets the Stats by given category
+     * @param limit the limit of values wich should be selected to save database power
+     * @return a TreeMap cause the stats are sorted and have to be accessed in a sorted way
+     */
+    public TreeMap<String, Integer> getStats(StatsCategory category, int limit) {
+        TreeMap<String, Integer> stats = new TreeMap<>();
+        try {
+            PreparedStatement ps = sql.getConnection().prepareStatement("SELECT uuid," + category.getSqlName() + " FROM " + TABLE_NAME +
+                    "ORDER BY " + category.getSqlName() + " DESC LIMIT " + limit);
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                String playername = Bukkit.getOfflinePlayer(UUID.fromString(result.getString("uuid"))).getName();
+                int value = result.getInt(category.getSqlName());
+                stats.put(playername, value);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return null;
     }

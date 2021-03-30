@@ -4,6 +4,7 @@ import de.pongy.luckyjump.LuckyJump;
 import de.pongy.luckyjump.config.LobbyConfig;
 import de.pongy.luckyjump.utils.Countdown;
 import de.pongy.luckyjump.utils.LuckyJumpAction;
+import de.pongy.luckyjump.utils.WinnersHologram;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -17,10 +18,13 @@ public class Lobby extends GamePhase {
     public static int minPlayers = 2;
 
     public Countdown countdown;
+    public WinnersHologram winnersHologram;
 
     public Lobby(Location spawn) {
         super(spawn);
         countdown = new Countdown(LobbyConfig.lobbyTime, getEndAction());
+        winnersHologram = new WinnersHologram(LobbyConfig.winnersHologramLocation);
+        winnersHologram.updateLines();
     }
     @Override
     public void addPlayer(LuckyJumpPlayer player) {

@@ -5,8 +5,6 @@ import org.bukkit.command.CommandSender;
 
 public class Stats {
 
-    public enum StatsCategory {GAMES,WINS,CHECKPOINTSHIT,FELLOFF};
-
     private String playername;
     private int games;
     private int wins;

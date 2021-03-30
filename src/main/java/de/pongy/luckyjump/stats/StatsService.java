@@ -4,6 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+import java.util.TreeMap;
+
 public class StatsService {
 
     private static StatsService instance;
@@ -25,6 +28,17 @@ public class StatsService {
         else {
             return new Stats(playername, 0, 0, 0, 0, 0);
         }
+    }
+
+    /**
+     *  Can be used to get the best players on servers in given category
+     *  if a stat is null, there can't be find anyone
+     * @param category select wich category should be selected
+     * @param amount amount of Stats
+     * @return a list of Stats wich are the best in given category
+     */
+    public TreeMap<String, Integer> getBestStats(StatsCategory category, int amount) {
+        return StatsSQL.getInstance().getStats(category, amount);
     }
 
     /**

@@ -28,6 +28,11 @@ public class LobbyCommand implements CommandExecutor {
                 cfg.saveLocation("spawn", player.getLocation());
                 sender.sendMessage("The Lobby-Spawn have been updated!");
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 10);
+            } else if (args[0].equalsIgnoreCase("setwinnerholo")) {
+                LobbyConfig cfg = LuckyJump.getInstance().lobbyConfig;
+                cfg.saveLocation("winners-hologram", player.getLocation());
+                sender.sendMessage("The Winners-Hologram Location have been updated!");
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 10);
             } else
                 sendHelp(sender);
         } else
@@ -37,6 +42,7 @@ public class LobbyCommand implements CommandExecutor {
     public void sendHelp(CommandSender sender) {
         sender.sendMessage(ChatColor.GRAY + "Available Commands for Lobby Command:");
         sender.sendMessage(ChatColor.GRAY + "/lobby setspawn --> sets the spawn of the lobby to your actual location");
+        sender.sendMessage(ChatColor.GRAY + "/lobby setwinnerholo --> sets the location of the winners hologram");
         sender.sendMessage(ChatColor.RED + "Visit LuckyJump/LobbyConfig.yml to configure more!");
     }
 }
