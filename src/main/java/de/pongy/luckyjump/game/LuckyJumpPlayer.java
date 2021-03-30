@@ -2,13 +2,17 @@ package de.pongy.luckyjump.game;
 
 import de.pongy.luckyjump.config.GameConfig;
 import de.pongy.luckyjump.specialitems.LuckyItem;
+import de.pongy.luckyjump.stats.Stats;
+import de.pongy.luckyjump.stats.StatsService;
 import de.pongy.luckyjump.utils.Messages;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.List;
 import java.util.Random;
@@ -21,10 +25,13 @@ public class LuckyJumpPlayer {
     private Location checkpoint;
     // amount of coins the player earned through the game
     private int coins;
+    public Stats stats;
 
     public LuckyJumpPlayer(Player player) {
         this.player = player;
         this.coins = 0;
+        stats = StatsService.getInstance().getStats(player.getName());
+        stats.printStats(Bukkit.getConsoleSender());
     }
 
     /**
@@ -44,6 +51,11 @@ public class LuckyJumpPlayer {
     public void setLevel(int level) {
         player.setLevel(level);
         player.setExp(0.0f);
+    }
+    public void clearPotionEffects() {
+        for (PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
     }
     public void sendCoinsAmount() {
         sendMessage(ChatColor.GREEN + "You earned " + coins + " coins in this game!");

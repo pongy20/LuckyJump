@@ -2,6 +2,7 @@ package de.pongy.luckyjump.game;
 
 import de.pongy.luckyjump.LuckyJump;
 import de.pongy.luckyjump.config.GameConfig;
+import de.pongy.luckyjump.stats.StatsService;
 import de.pongy.luckyjump.utils.Timer;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -47,6 +48,10 @@ public class Game extends GamePhase {
         playerA.getPlayer().teleport(map.getSpawnA());
         playerB.getPlayer().teleport(map.getSpawnB());
 
+        // update stats
+        playerA.stats.addGame();
+        playerB.stats.addGame();
+
         // send messages and play sounds
         sendGameMessage(ChatColor.GREEN + "The game have been started!");
         sendGameMessage(ChatColor.GREEN.toString() + ChatColor.UNDERLINE + "Good luck and have fun!");
@@ -57,38 +62,52 @@ public class Game extends GamePhase {
     }
     public void sendBackToCheckpoint(Player player) {
         LuckyJumpPlayer lPlayer = getPlayer(player);
-        player.teleport(lPlayer.equals(playerA) ? checkpointA : checkpointB);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 10);
-        }
-        public void updateCheckpoint(Player player, Location checkpoint) {
+        lPlayer.stats.addFellOff();
+        Location toTeleport = lPlayer.equals(playerA) ? checkpointA.clone() : checkpointB.clone();
+        toTeleport.setPitch(player.getLocation().getPitch());
+        player.teleport(toTeleport);
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 10);
+    }
+    public void updateCheckpoint(Player player, Location checkpoint) {
             LuckyJumpPlayer lPlayer = getPlayer(player);
-            checkpoint.setYaw(0);
-            checkpoint.setX(checkpoint.getBlockX() - 0.5);
-            checkpoint.setZ(checkpoint.getBlockZ() - 0.5);
             if (checkBlockEquals(checkpoint, checkpointA) || checkBlockEquals(checkpoint, checkpointB))
                 return;
             if (lPlayer.equals(playerA))
                 checkpointA = checkpoint.add(0, 0.5, 0);
             else if (lPlayer.equals(playerB))
                 checkpointB = checkpoint.add(0,0.5,0);
+        checkpoint.setYaw(0);
+        checkpoint.setX(checkpoint.getBlockX() + 0.5);
+        checkpoint.setZ(checkpoint.getBlockZ() + 0.5);
         lPlayer.addCoins(GameConfig.coinsPerCheckpoint);
+        lPlayer.stats.addCheckpointHit();
         lPlayer.sendActionBarMessage(ChatColor.GREEN + "You earned " + GameConfig.coinsPerCheckpoint + " coins.");
         lPlayer.sendMessage(ChatColor.GREEN + "You reached a new Checkpoint!");
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 10);
     }
     public void winGame(Player player) {
         timer.stop();
-        LuckyJumpPlayer lPlayer = getPlayer(player);
+        LuckyJumpPlayer winnerPlayer = getPlayer(player);
+        winnerPlayer.stats.addWin();
         // send messages and play sound
         sendGameMessage(ChatColor.DARK_RED + player.getName() + " won the game!");
         playerA.sendCoinsAmount();
         playerB.sendCoinsAmount();
         //TODO: add Coins to database
+
+        // update stats
+        StatsService.getInstance().pushStats(Bukkit.getOfflinePlayer(playerA.getPlayer().getName()), playerA.stats);
+        StatsService.getInstance().pushStats(Bukkit.getOfflinePlayer(playerB.getPlayer().getName()), playerB.stats);
+
         playSound(Sound.ENTITY_ENDER_DRAGON_GROWL, 10);
         // teleport lobby
         Location lobbyLoc = LuckyJump.getInstance().lobby.getSpawn();
         playerA.getPlayer().teleport(lobbyLoc);
         playerB.getPlayer().teleport(lobbyLoc);
+        playerA.clearInventory();
+        playerB.clearInventory();
+        playerA.clearPotionEffects();
+        playerB.clearPotionEffects();
 
         // reset world and send players back to lobby --> delayed
         Bukkit.getScheduler().runTaskLater(LuckyJump.getInstance(), new Runnable() {
@@ -128,10 +147,10 @@ public class Game extends GamePhase {
     }
 
     /**
-     * Plays a sound for all ingame players
+     * Plays a sound for all in game players
      * TODO: add spectators
      */
-    private void playSound(Sound sound, int volume) {
+    private void playSound(final Sound sound, final int volume) {
         for (LuckyJumpPlayer player : players) {
             player.getPlayer().playSound(player.getPlayer().getLocation(), sound, volume, 10);
         }

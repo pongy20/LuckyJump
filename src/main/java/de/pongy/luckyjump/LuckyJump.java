@@ -6,19 +6,16 @@ import de.pongy.luckyjump.command.SpawnCommand;
 import de.pongy.luckyjump.command.StartCommand;
 import de.pongy.luckyjump.config.GameConfig;
 import de.pongy.luckyjump.config.LobbyConfig;
+import de.pongy.luckyjump.config.SQLConfig;
 import de.pongy.luckyjump.game.Game;
 import de.pongy.luckyjump.game.GamePhase;
 import de.pongy.luckyjump.game.Lobby;
 import de.pongy.luckyjump.listener.GameListener;
 import de.pongy.luckyjump.listener.PlayerJoin;
 import de.pongy.luckyjump.listener.PlayerLeave;
-import de.pongy.luckyjump.specialitems.luckyitems.BowItem;
-import de.pongy.luckyjump.specialitems.luckyitems.FreezeEnemyItem;
-import de.pongy.luckyjump.specialitems.luckyitems.KillRod;
-import de.pongy.luckyjump.specialitems.luckyitems.SpeedPotionItem;
-import de.pongy.luckyjump.specialitems.unluckyitems.BackToCheckpoint;
-import de.pongy.luckyjump.specialitems.unluckyitems.DizzyItem;
-import de.pongy.luckyjump.specialitems.unluckyitems.FreezyYourself;
+import de.pongy.luckyjump.specialitems.luckyitems.*;
+import de.pongy.luckyjump.specialitems.unluckyitems.*;
+import de.pongy.luckyjump.stats.StatsSQL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
@@ -40,6 +37,7 @@ public final class LuckyJump extends JavaPlugin {
     // configs
     public LobbyConfig lobbyConfig;
     public GameConfig gameConfig;
+    public SQLConfig sqlConfig;
 
     @Override
     public void onLoad() {
@@ -66,6 +64,7 @@ public final class LuckyJump extends JavaPlugin {
 
         registerEvents();
         registerCommands();
+        registerSQL();
     }
 
     @Override
@@ -86,6 +85,10 @@ public final class LuckyJump extends JavaPlugin {
         new SpeedPotionItem();
         new FreezyYourself();
         new DizzyItem();
+        new JumpBoostItem();
+        new SnowballItem();
+        new BlindnessItem();
+        new SlownessItem();
     }
     private void registerCommands() {
         this.getCommand("start").setExecutor(new StartCommand());
@@ -93,15 +96,29 @@ public final class LuckyJump extends JavaPlugin {
         this.getCommand("setspawn").setExecutor(new SpawnCommand());
         this.getCommand("configure").setExecutor(new ConfigureCommand());
     }
+    private void registerSQL() {
+        try {
+            StatsSQL.getInstance().sql.connect();
+        } catch (Exception e) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "SQL-Connection have to be configured in sql-Config file!");
+            e.printStackTrace();
+            return;
+        }
+        StatsSQL.getInstance().createTable();
+    }
     private void setConfigs() {
         lobbyConfig = new LobbyConfig();
         lobbyConfig.setDefaults();
 
         gameConfig = new GameConfig();
         gameConfig.setDefaults();
+
+        sqlConfig = new SQLConfig();
+        sqlConfig.setDefaults();
     }
     private void loadConfigs() {
         lobbyConfig.loadDefaults();
         gameConfig.loadDefaults();
+        sqlConfig.loadDefaults();
     }
 }

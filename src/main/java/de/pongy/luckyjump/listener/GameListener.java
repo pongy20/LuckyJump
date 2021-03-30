@@ -1,20 +1,17 @@
 package de.pongy.luckyjump.listener;
 
+import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import de.pongy.luckyjump.LuckyJump;
 import de.pongy.luckyjump.game.Game;
+import de.pongy.luckyjump.game.LuckyJumpPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
@@ -76,6 +73,13 @@ public class GameListener implements Listener {
             player.getInventory().setItemInOffHand(null);
     }
     @EventHandler
+    public void onJump(PlayerJumpEvent event) {
+        if (LuckyJump.getInstance().game instanceof Game) {
+            Game game = LuckyJump.getInstance().game;
+            game.getPlayer(event.getPlayer()).stats.addJump();
+        }
+    }
+    @EventHandler
     public void onWeatherChange(WeatherChangeEvent event) {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "weather clear");
         event.getWorld().setClearWeatherDuration(Integer.MAX_VALUE);
@@ -99,5 +103,11 @@ public class GameListener implements Listener {
     @EventHandler
     public void onFoodLevel(FoodLevelChangeEvent event) {
         event.setFoodLevel(20);
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        event.getEntity().teleport(LuckyJump.getInstance().lobby.getSpawn());
+        System.out.println("Test");
     }
 }

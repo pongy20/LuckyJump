@@ -64,12 +64,14 @@ public class FreezeEnemyItem extends LuckyItem implements Listener {
         }
         freezedPlayers.add(toFreeze.getPlayer());
         toFreeze.sendMessage(ChatColor.RED + "You have been frozen by your enemy!");
-        sender.sendMessage(ChatColor.GREEN + "You enemy have been frozen!");
+        toFreeze.getPlayer().setAllowFlight(true);
+        sender.sendMessage(ChatColor.GREEN + "Your enemy have been frozen!");
         sender.playSound(sender.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 10);
         Bukkit.getScheduler().runTaskLater(LuckyJump.getInstance(), new Runnable() {
             @Override
             public void run() {
                 freezedPlayers.remove(toFreeze.getPlayer());
+                toFreeze.getPlayer().setAllowFlight(false);
             }
         }, 20*5);
     }
