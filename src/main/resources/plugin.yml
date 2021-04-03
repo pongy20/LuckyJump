@@ -5,6 +5,8 @@ api-version: 1.16
 authors: [ pongy20 ]
 description: A Minigame created for CommunityHome.eu
 website: communityhome.eu
+depend:
+  - PongyEssentials
 commands:
   start:
     description: Command to force start a LuckyJump Game
@@ -22,3 +24,6 @@ commands:
     description: Command to set the two different spawn points
     usage: /setspawn <1/2>
     permission: luckyjump.admin
+  stats:
+    description: Command to see the stats of a player
+    usage: /stats (target-player)

@@ -48,6 +48,11 @@ public class GameListener implements Listener {
             event.setCancelled(true);
             return;
         }
+        Game game = LuckyJump.getInstance().game;
+        if (game.ended) {
+            event.setCancelled(true);
+            return;
+        }
         // catch fall damage during game
         if (event.getEntity() instanceof Player && event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
             event.setCancelled(true);
@@ -74,7 +79,7 @@ public class GameListener implements Listener {
     }
     @EventHandler
     public void onJump(PlayerJumpEvent event) {
-        if (LuckyJump.getInstance().game instanceof Game) {
+        if (LuckyJump.getInstance().actualPhase instanceof Game) {
             Game game = LuckyJump.getInstance().game;
             game.getPlayer(event.getPlayer()).stats.addJump();
         }

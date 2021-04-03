@@ -118,13 +118,14 @@ public class StatsSQL {
         TreeMap<String, Integer> stats = new TreeMap<>();
         try {
             PreparedStatement ps = sql.getConnection().prepareStatement("SELECT uuid," + category.getSqlName() + " FROM " + TABLE_NAME +
-                    "ORDER BY " + category.getSqlName() + " DESC LIMIT " + limit);
+                    " ORDER BY " + category.getSqlName() + " DESC LIMIT " + limit);
             ResultSet result = ps.executeQuery();
             while (result.next()) {
                 String playername = Bukkit.getOfflinePlayer(UUID.fromString(result.getString("uuid"))).getName();
                 int value = result.getInt(category.getSqlName());
                 stats.put(playername, value);
             }
+            return stats;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

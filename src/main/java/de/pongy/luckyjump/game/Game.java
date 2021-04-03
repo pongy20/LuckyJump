@@ -2,8 +2,10 @@ package de.pongy.luckyjump.game;
 
 import de.pongy.luckyjump.LuckyJump;
 import de.pongy.luckyjump.config.GameConfig;
+import de.pongy.luckyjump.config.LobbyConfig;
 import de.pongy.luckyjump.stats.StatsService;
 import de.pongy.luckyjump.utils.Timer;
+import de.pongy.luckyjump.utils.WinnersHologram;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
@@ -15,6 +17,7 @@ public class Game extends GamePhase {
     public GameMap map;
     public LuckyJumpPlayer playerA, playerB;
     private Location checkpointA, checkpointB;
+    public boolean ended;
 
     private Timer timer;
 
@@ -87,6 +90,7 @@ public class Game extends GamePhase {
     }
     public void winGame(Player player) {
         timer.stop();
+        ended = true;
         LuckyJumpPlayer winnerPlayer = getPlayer(player);
         winnerPlayer.stats.addWin();
         // send messages and play sound
@@ -141,7 +145,7 @@ public class Game extends GamePhase {
     public void removePlayer(Player player) {
         super.removePlayer(player);
         sendGameMessage(ChatColor.RED + player.getName() + " left the game.");
-        if (players.size() <= 1) {
+        if (players.size() <= 1 && !ended) {
             winGame(players.get(0).getPlayer());
         }
     }

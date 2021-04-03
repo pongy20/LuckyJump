@@ -1,9 +1,6 @@
 package de.pongy.luckyjump;
 
-import de.pongy.luckyjump.command.ConfigureCommand;
-import de.pongy.luckyjump.command.LobbyCommand;
-import de.pongy.luckyjump.command.SpawnCommand;
-import de.pongy.luckyjump.command.StartCommand;
+import de.pongy.luckyjump.command.*;
 import de.pongy.luckyjump.config.GameConfig;
 import de.pongy.luckyjump.config.LobbyConfig;
 import de.pongy.luckyjump.config.SQLConfig;
@@ -50,6 +47,7 @@ public final class LuckyJump extends JavaPlugin {
         // Plugin startup logic
         setConfigs();
         loadConfigs();
+        registerSQL();
 
         if (LobbyConfig.lobbySpawn != null && GameConfig.spawnA != null && GameConfig.spawnB != null && GameConfig.spectator != null) {
             lobby = new Lobby(LobbyConfig.lobbySpawn);
@@ -64,7 +62,6 @@ public final class LuckyJump extends JavaPlugin {
 
         registerEvents();
         registerCommands();
-        registerSQL();
     }
 
     @Override
@@ -95,6 +92,7 @@ public final class LuckyJump extends JavaPlugin {
         this.getCommand("lobby").setExecutor(new LobbyCommand());
         this.getCommand("setspawn").setExecutor(new SpawnCommand());
         this.getCommand("configure").setExecutor(new ConfigureCommand());
+        this.getCommand("stats").setExecutor(new StatsCommand());
     }
     private void registerSQL() {
         try {

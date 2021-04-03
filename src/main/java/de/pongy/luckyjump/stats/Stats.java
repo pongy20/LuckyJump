@@ -22,7 +22,7 @@ public class Stats {
     }
 
     public void printStats(CommandSender target) {
-        target.sendMessage(ChatColor.YELLOW + "Stats von " + ChatColor.GOLD + playername);
+        target.sendMessage(ChatColor.RED + "Stats von " + ChatColor.GOLD + playername);
         target.sendMessage(ChatColor.YELLOW + "Gespielte Spiele: " + ChatColor.GOLD + games);
         target.sendMessage(ChatColor.YELLOW + "Gewonnene Spiele: " + ChatColor.GOLD + wins);
         target.sendMessage(ChatColor.YELLOW + "Anzahl der Sprünge: " + ChatColor.GOLD + jumps);
