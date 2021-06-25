@@ -31,11 +31,11 @@ public class Lobby extends GamePhase {
         if (players.contains(player))
             return;
         if (players.size() > maxPlayers) {
-            player.getPlayer().kickPlayer("Game is full!"); //TODO: have to be replaced with sending back to lobby
+            player.getPlayer().kickPlayer("Spiel ist voll!"); //TODO: have to be replaced with sending back to lobby
             return;
         }
         super.addPlayer(player);
-        sendGameMessage(ChatColor.GREEN + player.getPlayer().getName() + " joined the game (" + players.size() + "/" + maxPlayers + ").");
+        sendGameMessage(ChatColor.GREEN + player.getPlayer().getName() + " hat das Spiel betreten (" + players.size() + "/" + maxPlayers + ").");
         player.getPlayer().teleport(spawn);
         player.clearInventory();
         player.setLevel(0);
@@ -46,7 +46,7 @@ public class Lobby extends GamePhase {
     @Override
     public void removePlayer(Player player) {
         super.removePlayer(player);
-        sendGameMessage(ChatColor.RED + player.getName() + " has left the game (" + players.size() + "/" + maxPlayers + ").");
+        sendGameMessage(ChatColor.RED + player.getName() + " hat das Spiel verlassen (" + players.size() + "/" + maxPlayers + ").");
         if (players.isEmpty()) {
             countdown.pause();
             countdown.setTime(30);
@@ -57,7 +57,7 @@ public class Lobby extends GamePhase {
         if (players.size() >= minPlayers) {      // start countdown condition
             countdown.start();
         } else {
-            sendGameMessage(ChatColor.GREEN + "There have to be at least " + ChatColor.GOLD + minPlayers + ChatColor.GREEN + " players to start the game!");
+            sendGameMessage(ChatColor.GREEN + "Es müssen mindestens " + ChatColor.GOLD + minPlayers + ChatColor.GREEN + " Spieler online sein, um das Spiel zu starten!");
         }
     }
     public LuckyJumpAction getEndAction() {

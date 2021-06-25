@@ -22,12 +22,12 @@ public class LuckyItem {
 
     public void giveItem(Player player) {
         if (lucky) {
-            player.sendMessage(ChatColor.GREEN + "You were lucky!!!");
-            player.sendMessage(ChatColor.GREEN.toString() + ChatColor.BOLD + "You got " + ChatColor.GOLD.toString() + ChatColor.UNDERLINE + name + ChatColor.RESET + ChatColor.GREEN.toString() + ChatColor.BOLD +"!");
+            player.sendMessage(ChatColor.GREEN + "Du hattest Glück!!!");
+            player.sendMessage(ChatColor.GREEN.toString() + ChatColor.BOLD + "Du hast " + ChatColor.GOLD.toString() + ChatColor.UNDERLINE + name + ChatColor.RESET + ChatColor.GREEN.toString() + ChatColor.BOLD + " erhalten!");
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, 10);
         } else {
-            player.sendMessage(ChatColor.RED + "You were unlucky!!!");
-            player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "You got " + ChatColor.GOLD.toString() + ChatColor.UNDERLINE + name + ChatColor.RESET + ChatColor.RED.toString() + ChatColor.BOLD +"!");
+            player.sendMessage(ChatColor.RED + "Du hattest kein Glück!!!");
+            player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "Du hast " + ChatColor.GOLD.toString() + ChatColor.UNDERLINE + name + ChatColor.RESET + ChatColor.RED.toString() + ChatColor.BOLD + " erhalten!");
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10, 10);
         }
     }

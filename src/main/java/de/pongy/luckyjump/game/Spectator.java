@@ -25,7 +25,7 @@ public class Spectator {
            player.setExp(0);
            player.getInventory().clear();
            player.getInventory().setArmorContents(null);
-           player.sendMessage(Messages.prefix + ChatColor.GREEN.toString() + "You entered the spectator mode!");
+           player.sendMessage(Messages.prefix + ChatColor.GREEN.toString() + "Du hast den Zuschauermodus betreten!");
 
     }
     public static boolean isSpectator(Player player) {

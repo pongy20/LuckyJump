@@ -26,7 +26,7 @@ public class StatsCommand implements CommandExecutor {
     }
     private void showStats(CommandSender sender, String targetPlayer) {
         Stats stats = StatsService.getInstance().getStats(targetPlayer);
-        if (stats == null) {
+        if (stats == null || stats.getGames() <= 0) {
             sender.sendMessage(ChatColor.GRAY + "Es konnten keine Stats für den Spieler " + ChatColor.GOLD + targetPlayer + ChatColor.GRAY + " gefunden werden.");
             return;
         }

@@ -113,6 +113,5 @@ public class GameListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         event.getEntity().teleport(LuckyJump.getInstance().lobby.getSpawn());
-        System.out.println("Test");
     }
 }

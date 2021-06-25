@@ -56,8 +56,8 @@ public class Game extends GamePhase {
         playerB.stats.addGame();
 
         // send messages and play sounds
-        sendGameMessage(ChatColor.GREEN + "The game have been started!");
-        sendGameMessage(ChatColor.GREEN.toString() + ChatColor.UNDERLINE + "Good luck and have fun!");
+        sendGameMessage(ChatColor.GREEN + "Das Spiel wurde gestartet!");
+        sendGameMessage(ChatColor.GREEN.toString() + ChatColor.UNDERLINE + "Viel Spaß!");
         playSound(Sound.ENTITY_ENDER_DRAGON_GROWL, 10);
         checkpointA.getWorld().setTime(0);
 
@@ -85,7 +85,7 @@ public class Game extends GamePhase {
         lPlayer.addCoins(GameConfig.coinsPerCheckpoint);
         lPlayer.stats.addCheckpointHit();
         lPlayer.sendActionBarMessage(ChatColor.GREEN + "You earned " + GameConfig.coinsPerCheckpoint + " coins.");
-        lPlayer.sendMessage(ChatColor.GREEN + "You reached a new Checkpoint!");
+        lPlayer.sendMessage(ChatColor.GREEN + "Du hast einen Checkpoint erreicht!");
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 10);
     }
     public void winGame(Player player) {
@@ -94,7 +94,7 @@ public class Game extends GamePhase {
         LuckyJumpPlayer winnerPlayer = getPlayer(player);
         winnerPlayer.stats.addWin();
         // send messages and play sound
-        sendGameMessage(ChatColor.DARK_RED + player.getName() + " won the game!");
+        sendGameMessage(ChatColor.DARK_RED + player.getName() + " hat das Spiel gewonnen!");
         playerA.sendCoinsAmount();
         playerB.sendCoinsAmount();
         //TODO: add Coins to database
@@ -118,7 +118,7 @@ public class Game extends GamePhase {
             @Override
             public void run() {
                 for (Player all : Bukkit.getOnlinePlayers()) {
-                    all.kickPlayer("Game ended!\n" + player.getName() + " have won the game!");
+                    all.kickPlayer("Spiel wurde beendet!\n" + player.getName() + " hat das Spiel gewonnen!");
                 }
                 Bukkit.getServer().reload();
                 //TODO: reset world...
@@ -144,7 +144,7 @@ public class Game extends GamePhase {
     @Override
     public void removePlayer(Player player) {
         super.removePlayer(player);
-        sendGameMessage(ChatColor.RED + player.getName() + " left the game.");
+        sendGameMessage(ChatColor.RED + player.getName() + " hat das Spiel verlassen.");
         if (players.size() <= 1 && !ended) {
             winGame(players.get(0).getPlayer());
         }

@@ -25,7 +25,7 @@ public class KillRod extends LuckyItem implements Listener {
         super.giveItem(player);
         ItemStack blazeRod = new ItemStack(Material.BLAZE_ROD);
         ItemMeta meta = blazeRod.getItemMeta();;
-        meta.setDisplayName(ChatColor.RED + "Click to kill your enemy!");
+        meta.setDisplayName(ChatColor.RED + "Klicke um deinen Gegner zu töten!");
         blazeRod.setItemMeta(meta);
 
         player.getInventory().addItem(blazeRod);
@@ -47,9 +47,9 @@ public class KillRod extends LuckyItem implements Listener {
         LuckyJumpPlayer lSender = game.getPlayer(sender);
         LuckyJumpPlayer toKill = lSender.equals(game.playerA) ? game.playerB : game.playerA;
         game.sendBackToCheckpoint(toKill.getPlayer());
-        toKill.sendMessage(ChatColor.RED + "Your opponent killed you with " + name);
+        toKill.sendMessage(ChatColor.RED + "Dein Gegner hat dich mit " + name + " getötet.");
         toKill.getPlayer().playSound(toKill.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_HURT, 10,10);
-        sender.sendMessage(ChatColor.GREEN + "You killed your opponent!");
+        sender.sendMessage(ChatColor.GREEN + "Du hast deinen Gegner getötet!");
         sender.playSound(sender.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 10);
     }
 }

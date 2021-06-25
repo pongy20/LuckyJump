@@ -37,7 +37,7 @@ public class Countdown {
                 public void run() {
                     sendCountdown();
                     if (time == 15 || time == 10 || time <= 5 && time > 0) {
-                        LuckyJump.getInstance().lobby.sendGameMessage(ChatColor.GREEN + "The game will start in " + ChatColor.GOLD + time + ChatColor.GREEN + " seconds.");
+                        LuckyJump.getInstance().lobby.sendGameMessage(ChatColor.GREEN + "Das Spiel startet in " + ChatColor.GOLD + time + ChatColor.GREEN + " Sekunden.");
                     }
                     if (time <= 3 && time > 0) {
                         playSoundForAll(Sound.BLOCK_NOTE_BLOCK_BASS);
@@ -65,9 +65,9 @@ public class Countdown {
                 if (time <= 0) {
                     player.spigot().sendMessage(messageType, new TextComponent(ChatColor.RED.toString() + ChatColor.BOLD + "The game is about to start"));
                 } else
-                    player.spigot().sendMessage(messageType, new TextComponent(ChatColor.RED.toString() +  ChatColor.BOLD + "Game will start in " + getConvertedTime()));
+                    player.spigot().sendMessage(messageType, new TextComponent(ChatColor.RED.toString() +  ChatColor.BOLD + "Das Spiel startet in " + getConvertedTime()));
             } else
-                player.spigot().sendMessage(messageType, new TextComponent(ChatColor.RED + "Countdown have been paused..."));
+                player.spigot().sendMessage(messageType, new TextComponent(ChatColor.RED + "Countdown wurde pausiert..."));
         }
     }
     public void playSoundForAll(Sound sound) {

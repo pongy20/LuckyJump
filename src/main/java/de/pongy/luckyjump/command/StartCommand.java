@@ -18,18 +18,18 @@ public class StartCommand implements CommandExecutor {
             if (args.length == 0) {
                 if (lobby.countdown.getTime() > LobbyConfig.startCommandTime)
                     lobby.countdown.setTime(LobbyConfig.startCommandTime);
-                sender.sendMessage(ChatColor.GREEN + "You forced the game to start!");
+                sender.sendMessage(ChatColor.GREEN + "Du hast den Spielstart forciert!");
             } else if (args.length == 1) {
                 int time;
                 try {
                     time = Integer.parseInt(args[0]);
                 } catch (NumberFormatException ex) {
-                    sender.sendMessage(ChatColor.RED + args[0] + " is not a valid number!");
-                    sender.sendMessage(ChatColor.RED + "Please enter a valid number of seconds!");
+                    sender.sendMessage(ChatColor.RED + args[0] + " ist keine gültige Nummer!");
+                    sender.sendMessage(ChatColor.RED + "Bitte gebe eine gültige Nummer ein!");
                     return true;
                 }
                 lobby.countdown.setTime(time);
-                sender.sendMessage(ChatColor.GREEN + "You updated the lobby time to " + ChatColor.GOLD + time + ChatColor.GREEN + " seconds!");
+                sender.sendMessage(ChatColor.GREEN + "Du hast die Zeit bis zum Spielstart auf " + ChatColor.GOLD + time + ChatColor.GREEN + " Sekunden geändert!");
             } else {
                 sender.sendMessage(ChatColor.GRAY + "/start <seconds>");
             }

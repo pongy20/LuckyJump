@@ -31,7 +31,6 @@ public class LuckyJumpPlayer {
         this.player = player;
         this.coins = 0;
         stats = StatsService.getInstance().getStats(player.getName());
-        stats.printStats(Bukkit.getConsoleSender());
     }
 
     /**
@@ -58,7 +57,7 @@ public class LuckyJumpPlayer {
         }
     }
     public void sendCoinsAmount() {
-        sendMessage(ChatColor.GREEN + "You earned " + coins + " coins in this game!");
+        sendMessage(ChatColor.GREEN + "Du hast in dieser Runde " + coins + " coins verdient!");
     }
     public void makePlayerPlayable() {
         clearInventory();

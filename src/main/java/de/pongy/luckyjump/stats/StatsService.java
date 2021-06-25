@@ -22,7 +22,6 @@ public class StatsService {
      */
     public Stats getStats(String playername) {
         Stats stats = StatsSQL.getInstance().getStats(Bukkit.getOfflinePlayer(playername).getUniqueId().toString());
-        System.out.println(Bukkit.getOfflinePlayer(playername).getUniqueId().toString());
         if (stats != null)
             return stats;
         else {

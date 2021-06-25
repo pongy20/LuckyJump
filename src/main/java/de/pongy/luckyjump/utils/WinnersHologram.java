@@ -26,7 +26,7 @@ public class WinnersHologram extends Hologram {
             return;
         }
         int index = 1;
-        addLine(ChatColor.RED + "Best Players: Wins");
+        addLine(ChatColor.RED + "Beste Spieler (Wins):");
         addLine(" ");
         List<Map.Entry<String, Integer>> sortedResult = new ArrayList<>(wins.entrySet());
         sortedResult.sort(Map.Entry.comparingByValue());
