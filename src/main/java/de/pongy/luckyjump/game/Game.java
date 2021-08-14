@@ -15,6 +15,7 @@ public class Game extends GamePhase {
     public static Material winCheckpointMaterial = Material.LIGHT_WEIGHTED_PRESSURE_PLATE;
 
     public GameMap map;
+    public GameCancel gameCancel;
     public LuckyJumpPlayer playerA, playerB;
     private Location checkpointA, checkpointB;
     public boolean ended;
@@ -26,6 +27,7 @@ public class Game extends GamePhase {
         World world = GameConfig.spawnA.getWorld();
         map = new GameMap(world, GameConfig.spawnA, GameConfig.spawnB);
         map.setResetY(GameConfig.resetY);
+        gameCancel = new GameCancel(30);
         timer = new Timer();
     }
 
@@ -61,6 +63,7 @@ public class Game extends GamePhase {
         playSound(Sound.ENTITY_ENDER_DRAGON_GROWL, 10);
         checkpointA.getWorld().setTime(0);
 
+        //gameCancel.startCancelCountdown();
         timer.start();
     }
     public void sendBackToCheckpoint(Player player) {
@@ -106,13 +109,17 @@ public class Game extends GamePhase {
         playSound(Sound.ENTITY_ENDER_DRAGON_GROWL, 10);
         // teleport lobby
         Location lobbyLoc = LuckyJump.getInstance().lobby.getSpawn();
-        playerA.getPlayer().teleport(lobbyLoc);
-        playerB.getPlayer().teleport(lobbyLoc);
-        playerA.clearInventory();
-        playerB.clearInventory();
-        playerA.clearPotionEffects();
-        playerB.clearPotionEffects();
-
+        Bukkit.getScheduler().runTaskAsynchronously(LuckyJump.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                playerA.getPlayer().teleport(lobbyLoc);
+                playerB.getPlayer().teleport(lobbyLoc);
+                playerA.clearInventory();
+                playerB.clearInventory();
+                playerA.clearPotionEffects();
+                playerB.clearPotionEffects();
+            }
+        });
         // reset world and send players back to lobby --> delayed
         Bukkit.getScheduler().runTaskLater(LuckyJump.getInstance(), new Runnable() {
             @Override
