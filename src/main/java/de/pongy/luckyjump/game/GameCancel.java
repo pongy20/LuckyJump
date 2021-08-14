@@ -4,9 +4,7 @@ import de.pongy.luckyjump.LuckyJump;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * This class is used to cancel the game after some time
@@ -14,12 +12,16 @@ import java.util.TimerTask;
  */
 public class GameCancel {
 
+    public List<Integer> alerts = Arrays.asList(1,2,3,5,10,30,60,120);
+
     private final int cancelTime;
     private Timer timer;
     private boolean running;
+    private int currentTime;
 
     public GameCancel(int cancelTime) {
         this.cancelTime = cancelTime;
+        currentTime = cancelTime;
     }
     public void startCancelCountdown() {
         if (timer == null || !running) {
@@ -27,13 +29,25 @@ public class GameCancel {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    cancelGame();
+                    currentTime--;
+                    if (alerts.contains(currentTime)) {
+                        LuckyJump.getInstance().game.sendGameMessage(getCurrentTimeMessage());
+                        LuckyJump.getInstance().game.sendGameMessage(getWarningMessage());
+                    }
+                    if (currentTime <= 0) {
+                        cancelGame();       // cancels the time too
+                    }
                 }
-            }, (long) cancelTime * 1000);
+            }, 0, 1000);
             running = true;
         }
     }
-
+    private String getCurrentTimeMessage() {
+        return ChatColor.RED.toString() + ChatColor.BOLD + "The game will be canceled in " + ChatColor.GOLD + currentTime + ChatColor.RED + " seconds!";
+    }
+    private String getWarningMessage() {
+        return ChatColor.YELLOW.toString() + ChatColor.BOLD + "A random winner will be chosen!";
+    }
     /**
      * May have to be called when server reloads
      */

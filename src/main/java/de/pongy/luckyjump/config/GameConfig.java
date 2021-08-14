@@ -12,6 +12,9 @@ public class GameConfig extends Config {
     public static int resetY = 55;
     public static int serverReloadTime = 10;
     public static int luckyPercentage;      // the percentage a player gets an lucky item --> unlucky is 1 - that value
+    public static boolean useStats;
+    public static boolean gameCancelEnabled;
+    public static int gameCancelTime;
     public static Location spawnA, spawnB, spectator;
 
     public GameConfig() {
@@ -30,6 +33,9 @@ public class GameConfig extends Config {
         cfg.addDefault("coins-per-checkpoint", 20);
         cfg.addDefault("reset-Y", 55);
         cfg.addDefault("server-reload-time", 10);
+        cfg.addDefault("game_cancel_enabled", true);
+        cfg.addDefault("game_cancel_time", 300);
+        cfg.addDefault("use_stats", true);
 
         saveConfig(cfg);
     }
@@ -48,5 +54,7 @@ public class GameConfig extends Config {
         spawnB = loadLocation("spawn-player2");
         spectator = loadLocation("spawn-spectator");
         luckyPercentage = cfg.getInt("lucky-item-percentage");
+        gameCancelEnabled = cfg.getBoolean("game_cancel_enabled");
+        gameCancelTime = cfg.getInt("game_cancel_time");
     }
 }

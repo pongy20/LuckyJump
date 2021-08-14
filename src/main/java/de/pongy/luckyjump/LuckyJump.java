@@ -5,6 +5,7 @@ import de.pongy.luckyjump.config.GameConfig;
 import de.pongy.luckyjump.config.LobbyConfig;
 import de.pongy.luckyjump.config.SQLConfig;
 import de.pongy.luckyjump.game.Game;
+import de.pongy.luckyjump.game.GameCancel;
 import de.pongy.luckyjump.game.GamePhase;
 import de.pongy.luckyjump.game.Lobby;
 import de.pongy.luckyjump.listener.GameListener;
@@ -29,6 +30,7 @@ public final class LuckyJump extends JavaPlugin {
     // game states
     public Lobby lobby;
     public Game game;
+    public GameCancel gameCancel;
     public GamePhase actualPhase;
 
     // configs
@@ -47,11 +49,21 @@ public final class LuckyJump extends JavaPlugin {
         // Plugin startup logic
         setConfigs();
         loadConfigs();
-        registerSQL();
+        if (GameConfig.useStats) {
+            if (!registerSQL()) {
+                System.out.println();
+                Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "SQL-Connection can't be established - check your sql-config: /plugins/LuckyJump/SQL.yml");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "If you don't want to use SQL, disable 'use_stats' in /plugins/LuckyJump/GameConfig.yml!");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Plugin have been disabled. You have to fix this error.");
+                System.out.println();
+                return;
+            }
+        }
 
         if (LobbyConfig.lobbySpawn != null && GameConfig.spawnA != null && GameConfig.spawnB != null && GameConfig.spectator != null) {
             lobby = new Lobby(LobbyConfig.lobbySpawn);
             game = new Game();
+            gameCancel = new GameCancel(GameConfig.gameCancelTime);
             actualPhase = lobby;
         } else {
             System.out.println();
@@ -94,15 +106,16 @@ public final class LuckyJump extends JavaPlugin {
         this.getCommand("configure").setExecutor(new ConfigureCommand());
         this.getCommand("stats").setExecutor(new StatsCommand());
     }
-    private void registerSQL() {
+    private boolean registerSQL() {
         try {
             StatsSQL.getInstance().sql.connect();
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "SQL-Connection have to be configured in sql-Config file!");
             e.printStackTrace();
-            return;
+            return false;
         }
         StatsSQL.getInstance().createTable();
+        return true;
     }
     private void setConfigs() {
         lobbyConfig = new LobbyConfig();
