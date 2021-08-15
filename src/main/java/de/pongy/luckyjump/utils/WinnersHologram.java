@@ -1,6 +1,5 @@
 package de.pongy.luckyjump.utils;
 
-import de.pongy.api.essentials.hologram.Hologram;
 import de.pongy.luckyjump.stats.StatsCategory;
 import de.pongy.luckyjump.stats.StatsService;
 import org.bukkit.ChatColor;

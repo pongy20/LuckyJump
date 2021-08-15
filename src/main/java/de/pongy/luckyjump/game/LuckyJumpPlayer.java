@@ -17,7 +17,6 @@ import org.bukkit.potion.PotionEffect;
 import java.util.List;
 import java.util.Random;
 
-//TODO: maybe it is better to let this class extend Player
 public class LuckyJumpPlayer {
 
     private final Player player;
