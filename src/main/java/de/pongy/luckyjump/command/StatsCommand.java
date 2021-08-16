@@ -1,5 +1,9 @@
 package de.pongy.luckyjump.command;
 
+import de.pongy.luckyjump.language.LanguageConfig;
+import de.pongy.luckyjump.language.LanguagePlaceholder;
+import de.pongy.luckyjump.language.MessageKeys;
+import de.pongy.luckyjump.language.PlaceholderPrefabs;
 import de.pongy.luckyjump.stats.Stats;
 import de.pongy.luckyjump.stats.StatsService;
 import org.bukkit.ChatColor;
@@ -27,7 +31,8 @@ public class StatsCommand implements CommandExecutor {
     private void showStats(CommandSender sender, String targetPlayer) {
         Stats stats = StatsService.getInstance().getStats(targetPlayer);
         if (stats == null || stats.getGames() <= 0) {
-            sender.sendMessage(ChatColor.GRAY + "Es konnten keine Stats für den Spieler " + ChatColor.GOLD + targetPlayer + ChatColor.GRAY + " gefunden werden.");
+            sender.sendMessage(LanguageConfig.getInstance().getMessage(MessageKeys.STATS_NOT_FOUND.getKey(),
+                    new LanguagePlaceholder(PlaceholderPrefabs.TARGET.getName(), targetPlayer)));
             return;
         }
         stats.printStats(sender);

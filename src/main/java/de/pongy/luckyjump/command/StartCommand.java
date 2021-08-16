@@ -3,6 +3,10 @@ package de.pongy.luckyjump.command;
 import de.pongy.luckyjump.LuckyJump;
 import de.pongy.luckyjump.config.LobbyConfig;
 import de.pongy.luckyjump.game.Lobby;
+import de.pongy.luckyjump.language.LanguageConfig;
+import de.pongy.luckyjump.language.LanguagePlaceholder;
+import de.pongy.luckyjump.language.MessageKeys;
+import de.pongy.luckyjump.language.PlaceholderPrefabs;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,18 +22,19 @@ public class StartCommand implements CommandExecutor {
             if (args.length == 0) {
                 if (lobby.countdown.getTime() > LobbyConfig.startCommandTime)
                     lobby.countdown.setTime(LobbyConfig.startCommandTime);
-                sender.sendMessage(ChatColor.GREEN + "Du hast den Spielstart forciert!");
+                sender.sendMessage(LanguageConfig.getInstance().getMessage(MessageKeys.GAME_FORCESTARTED.getKey()));
             } else if (args.length == 1) {
                 int time;
                 try {
                     time = Integer.parseInt(args[0]);
                 } catch (NumberFormatException ex) {
-                    sender.sendMessage(ChatColor.RED + args[0] + " ist keine gültige Nummer!");
-                    sender.sendMessage(ChatColor.RED + "Bitte gebe eine gültige Nummer ein!");
+                    sender.sendMessage(ChatColor.RED + args[0] + " is not a valid number!");
+                    sender.sendMessage(ChatColor.RED + "Please enter a valid number!");
                     return true;
                 }
                 lobby.countdown.setTime(time);
-                sender.sendMessage(ChatColor.GREEN + "Du hast die Zeit bis zum Spielstart auf " + ChatColor.GOLD + time + ChatColor.GREEN + " Sekunden geändert!");
+                sender.sendMessage(LanguageConfig.getInstance().getMessage(MessageKeys.STARTTIME_TOGGLED.getKey(),
+                        new LanguagePlaceholder(PlaceholderPrefabs.CURRENT_TIME.getName(), time + "")));
             } else {
                 sender.sendMessage(ChatColor.GRAY + "/start <seconds>");
             }

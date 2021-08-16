@@ -3,6 +3,10 @@ package de.pongy.luckyjump.game;
 import de.pongy.luckyjump.LuckyJump;
 import de.pongy.luckyjump.config.GameConfig;
 import de.pongy.luckyjump.config.LobbyConfig;
+import de.pongy.luckyjump.language.LanguageConfig;
+import de.pongy.luckyjump.language.LanguagePlaceholder;
+import de.pongy.luckyjump.language.MessageKeys;
+import de.pongy.luckyjump.language.PlaceholderPrefabs;
 import de.pongy.luckyjump.utils.Countdown;
 import de.pongy.luckyjump.utils.LuckyJumpAction;
 import de.pongy.luckyjump.utils.WinnersHologram;
@@ -38,7 +42,13 @@ public class Lobby extends GamePhase {
             return;
         }
         super.addPlayer(player);
-        sendGameMessage(ChatColor.GREEN + player.getPlayer().getName() + " hat das Spiel betreten (" + players.size() + "/" + maxPlayers + ").");
+
+        LanguagePlaceholder playerPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.PLAYER.getName(), player.getPlayer().getName());
+        LanguagePlaceholder currentPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.CURRENT_PLAYER.getName(), players.size() + "");
+        LanguagePlaceholder maxPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.MAX_PLAYER.getName(), maxPlayers + "");
+
+        sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.PLAYER_JOIN.getKey(),
+                playerPlaceholder));
         player.getPlayer().teleport(spawn);
         player.clearInventory();
         player.setLevel(0);
@@ -49,7 +59,13 @@ public class Lobby extends GamePhase {
     @Override
     public void removePlayer(Player player) {
         super.removePlayer(player);
-        sendGameMessage(ChatColor.RED + player.getName() + " hat das Spiel verlassen (" + players.size() + "/" + maxPlayers + ").");
+
+        LanguagePlaceholder playerPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.PLAYER.getName(), player.getPlayer().getName());
+        LanguagePlaceholder currentPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.CURRENT_PLAYER.getName(), players.size() + "");
+        LanguagePlaceholder maxPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.MAX_PLAYER.getName(), maxPlayers + "");
+
+        sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.PLAYER_LEFT.getKey(),
+                playerPlaceholder,currentPlaceholder,maxPlaceholder));
         if (players.isEmpty()) {
             countdown.pause();
             countdown.setTime(30);
@@ -60,7 +76,8 @@ public class Lobby extends GamePhase {
         if (players.size() >= minPlayers) {      // start countdown condition
             countdown.start();
         } else {
-            sendGameMessage(ChatColor.GREEN + "Es müssen mindestens " + ChatColor.GOLD + minPlayers + ChatColor.GREEN + " Spieler online sein, um das Spiel zu starten!");
+            LanguagePlaceholder minPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.MIN_PLAYER.getName(), minPlayers + "");
+            sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.MINIMUM_PLAYERS_INGAME.getKey(), minPlaceholder));
         }
     }
     public LuckyJumpAction getEndAction() {
