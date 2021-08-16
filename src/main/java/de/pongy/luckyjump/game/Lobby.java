@@ -1,6 +1,7 @@
 package de.pongy.luckyjump.game;
 
 import de.pongy.luckyjump.LuckyJump;
+import de.pongy.luckyjump.config.GameConfig;
 import de.pongy.luckyjump.config.LobbyConfig;
 import de.pongy.luckyjump.utils.Countdown;
 import de.pongy.luckyjump.utils.LuckyJumpAction;
@@ -23,8 +24,10 @@ public class Lobby extends GamePhase {
     public Lobby(Location spawn) {
         super(spawn);
         countdown = new Countdown(LobbyConfig.lobbyTime, getEndAction());
-        winnersHologram = new WinnersHologram(LobbyConfig.winnersHologramLocation);
-        winnersHologram.updateLines();
+        if (GameConfig.useStats) {
+            winnersHologram = new WinnersHologram(LobbyConfig.winnersHologramLocation);
+            winnersHologram.updateLines();
+        }
     }
     @Override
     public void addPlayer(LuckyJumpPlayer player) {

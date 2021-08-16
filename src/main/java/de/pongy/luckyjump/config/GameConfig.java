@@ -56,5 +56,6 @@ public class GameConfig extends Config {
         luckyPercentage = cfg.getInt("lucky-item-percentage");
         gameCancelEnabled = cfg.getBoolean("game_cancel_enabled");
         gameCancelTime = cfg.getInt("game_cancel_time");
+        useStats = cfg.getBoolean("use_stats");
     }
 }

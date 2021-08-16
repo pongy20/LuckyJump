@@ -11,12 +11,12 @@
 
     <name>LuckyJump</name>
 
-    <description>A Minigame created for CommunityHome.eu</description>
+    <description>A Minigame developed by coerdevelopment.de</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>communityhome.eu</url>
+    <url>coerdevelopment.de</url>
 
     <build>
         <plugins>

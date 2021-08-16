@@ -56,6 +56,7 @@ public final class LuckyJump extends JavaPlugin {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "If you don't want to use SQL, disable 'use_stats' in /plugins/LuckyJump/GameConfig.yml!");
                 Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Plugin have been disabled. You have to fix this error.");
                 System.out.println();
+                Bukkit.getPluginManager().disablePlugin(Bukkit.getPluginManager().getPlugin("LuckyJump"));      // disabling the plugin in this case
                 return;
             }
         }
@@ -65,6 +66,7 @@ public final class LuckyJump extends JavaPlugin {
             game = new Game();
             gameCancel = new GameCancel(GameConfig.gameCancelTime);
             actualPhase = lobby;
+            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Lucky Jump have been started successfully!");
         } else {
             System.out.println();
             Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Game is not completely configured!");
