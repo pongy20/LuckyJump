@@ -3,11 +3,16 @@ package de.pongy.luckyjump.game;
 import de.pongy.luckyjump.LuckyJump;
 import de.pongy.luckyjump.config.GameConfig;
 import de.pongy.luckyjump.config.LobbyConfig;
+import de.pongy.luckyjump.language.LanguageConfig;
+import de.pongy.luckyjump.language.LanguagePlaceholder;
+import de.pongy.luckyjump.language.MessageKeys;
+import de.pongy.luckyjump.language.PlaceholderPrefabs;
 import de.pongy.luckyjump.stats.StatsService;
 import de.pongy.luckyjump.utils.Timer;
 import de.pongy.luckyjump.utils.WinnersHologram;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import sun.plugin2.message.Message;
 
 public class Game extends GamePhase {
 
@@ -56,8 +61,8 @@ public class Game extends GamePhase {
         playerB.stats.addGame();
 
         // send messages and play sounds
-        sendGameMessage(ChatColor.GREEN + "Das Spiel wurde gestartet!");
-        sendGameMessage(ChatColor.GREEN.toString() + ChatColor.UNDERLINE + "Viel Spaß!");
+        sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.GAME_STARTED.getKey()));
+        sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.GOOD_LUCK.getKey()));
         playSound(Sound.ENTITY_ENDER_DRAGON_GROWL, 10);
         checkpointA.getWorld().setTime(0);
 
@@ -87,8 +92,9 @@ public class Game extends GamePhase {
         checkpoint.setZ(checkpoint.getBlockZ() + 0.5);
         lPlayer.addCoins(GameConfig.coinsPerCheckpoint);
         lPlayer.stats.addCheckpointHit();
-        lPlayer.sendActionBarMessage(ChatColor.GREEN + "You earned " + GameConfig.coinsPerCheckpoint + " coins.");
-        lPlayer.sendMessage(ChatColor.GREEN + "Du hast einen Checkpoint erreicht!");
+        LanguagePlaceholder coinsPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.COINS.getName(), GameConfig.coinsPerCheckpoint + "");
+        lPlayer.sendActionBarMessage(LanguageConfig.getInstance().getMessage(MessageKeys.COINS_RECEIVED.getKey(), coinsPlaceholder));
+        lPlayer.sendMessage(LanguageConfig.getInstance().getMessage(MessageKeys.CHECKPOINT_REACHED.getKey()));
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 10);
     }
     public void winGame(Player player) {
@@ -97,7 +103,8 @@ public class Game extends GamePhase {
         LuckyJumpPlayer winnerPlayer = getPlayer(player);
         winnerPlayer.stats.addWin();
         // send messages and play sound
-        sendGameMessage(ChatColor.DARK_RED + player.getName() + " hat das Spiel gewonnen!");
+        LanguagePlaceholder playerPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.PLAYER.getName(), player.getName());
+        sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.GAME_WON.getKey(), playerPlaceholder));
         playerA.sendCoinsAmount();
         playerB.sendCoinsAmount();
         //TODO: add Coins to database
@@ -125,6 +132,7 @@ public class Game extends GamePhase {
             @Override
             public void run() {
                 for (Player all : Bukkit.getOnlinePlayers()) {
+                    //TODO: rework
                     all.kickPlayer("Spiel wurde beendet!\n" + player.getName() + " hat das Spiel gewonnen!");
                 }
                 Bukkit.getServer().reload();
@@ -151,7 +159,8 @@ public class Game extends GamePhase {
     @Override
     public void removePlayer(Player player) {
         super.removePlayer(player);
-        sendGameMessage(ChatColor.RED + player.getName() + " hat das Spiel verlassen.");
+        LanguagePlaceholder playerPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.PLAYER.getName(), player.getName());
+        sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.PLAYER_LEFT_RUNNING_GAME.getKey(), playerPlaceholder));
         if (players.size() <= 1 && !ended) {
             winGame(players.get(0).getPlayer());
         }

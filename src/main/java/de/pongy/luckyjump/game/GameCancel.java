@@ -1,6 +1,10 @@
 package de.pongy.luckyjump.game;
 
 import de.pongy.luckyjump.LuckyJump;
+import de.pongy.luckyjump.language.LanguageConfig;
+import de.pongy.luckyjump.language.LanguagePlaceholder;
+import de.pongy.luckyjump.language.MessageKeys;
+import de.pongy.luckyjump.language.PlaceholderPrefabs;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -43,7 +47,8 @@ public class GameCancel {
         }
     }
     private String getCurrentTimeMessage() {
-        return ChatColor.RED.toString() + ChatColor.BOLD + "The game will be canceled in " + ChatColor.GOLD + currentTime + ChatColor.RED + " seconds!";
+        LanguagePlaceholder languagePlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.CURRENT_TIME.getName(), currentTime + "");
+        return LanguageConfig.getInstance().getMessage(MessageKeys.GAME_CANCELED_COUNTDOWN.getKey(), languagePlaceholder);
     }
     private String getWarningMessage() {
         return ChatColor.YELLOW.toString() + ChatColor.BOLD + "A random winner will be chosen!";

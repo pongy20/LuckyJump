@@ -6,7 +6,8 @@ public enum PlaceholderPrefabs {
     MAX_PLAYER("{max_players}"),
     MIN_PLAYER("{min_players}"),
     CURRENT_PLAYER("{current_players}"),
-    CURRENT_TIME("{current_time}");
+    CURRENT_TIME("{current_time}"),
+    COINS("{coins}");
 
     private String name;
 

@@ -48,7 +48,7 @@ public class Lobby extends GamePhase {
         LanguagePlaceholder maxPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.MAX_PLAYER.getName(), maxPlayers + "");
 
         sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.PLAYER_JOIN.getKey(),
-                playerPlaceholder));
+                playerPlaceholder, currentPlaceholder, maxPlaceholder));
         player.getPlayer().teleport(spawn);
         player.clearInventory();
         player.setLevel(0);
@@ -68,7 +68,7 @@ public class Lobby extends GamePhase {
                 playerPlaceholder,currentPlaceholder,maxPlaceholder));
         if (players.isEmpty()) {
             countdown.pause();
-            countdown.setTime(30);
+            countdown.setTime(LobbyConfig.lobbyTime);
         }
     }
 

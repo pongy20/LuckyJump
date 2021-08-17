@@ -8,6 +8,7 @@ import de.pongy.luckyjump.game.Game;
 import de.pongy.luckyjump.game.GameCancel;
 import de.pongy.luckyjump.game.GamePhase;
 import de.pongy.luckyjump.game.Lobby;
+import de.pongy.luckyjump.language.LanguageConfig;
 import de.pongy.luckyjump.listener.GameListener;
 import de.pongy.luckyjump.listener.PlayerJoin;
 import de.pongy.luckyjump.listener.PlayerLeave;
@@ -128,10 +129,15 @@ public final class LuckyJump extends JavaPlugin {
 
         sqlConfig = new SQLConfig();
         sqlConfig.setDefaults();
+
+        LanguageConfig.getInstance().initDefaultValues();
+        LanguageConfig.getInstance().setDefaults();
     }
     private void loadConfigs() {
         lobbyConfig.loadDefaults();
         gameConfig.loadDefaults();
         sqlConfig.loadDefaults();
+
+        LanguageConfig.getInstance().loadDefaults();
     }
 }
