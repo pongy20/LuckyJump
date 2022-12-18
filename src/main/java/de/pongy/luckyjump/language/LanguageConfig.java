@@ -77,6 +77,11 @@ public class LanguageConfig extends Config {
         defaultMessages.put(MessageKeys.COINS_RECEIVED.getKey(), "&aYou earned &6{coins}&a coins.");
         defaultMessages.put(MessageKeys.GAME_WON.getKey(), "&4{player} won the game!");
         defaultMessages.put(MessageKeys.GAME_CANCELED_COUNTDOWN.getKey(), "&cThe game will be canceled in &6{current_time}&c seconds!");
+        defaultMessages.put(MessageKeys.STATS_HOLOGRAM_HEADER.getKey(), "&cBest Players (Wins):");
+        defaultMessages.put(MessageKeys.RANDOM_WINNER_WARNING.getKey(), "&e&lA random winner will be chosen!");
+        defaultMessages.put(MessageKeys.GAME_CANCEL_RANDOM_WINNER.getKey(), "&c&l&nThe game have been canceled and a random winner have been chosen.");
+        defaultMessages.put(MessageKeys.SPECTATORMODE_JOINED.getKey(), "&2You've joined the spectatormode!");
+        defaultMessages.put(MessageKeys.GAME_START_COUNTDOWN.getKey(), "&2The game will start in &6{current_time}&2 seconds!");
     }
     @Override
     public void loadDefaults() {

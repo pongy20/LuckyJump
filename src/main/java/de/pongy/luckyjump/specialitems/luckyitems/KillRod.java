@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class KillRod extends LuckyItem implements Listener {
     public KillRod() {
-        super("Kill Rod", true);
+        super("Rod of Death", true);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class KillRod extends LuckyItem implements Listener {
         super.giveItem(player);
         ItemStack blazeRod = new ItemStack(Material.BLAZE_ROD);
         ItemMeta meta = blazeRod.getItemMeta();;
-        meta.setDisplayName(ChatColor.RED + "Klicke um deinen Gegner zu töten!");
+        meta.setDisplayName(ChatColor.RED + "Click to kill your enemy!");
         blazeRod.setItemMeta(meta);
 
         player.getInventory().addItem(blazeRod);
@@ -47,9 +47,9 @@ public class KillRod extends LuckyItem implements Listener {
         LuckyJumpPlayer lSender = game.getPlayer(sender);
         LuckyJumpPlayer toKill = lSender.equals(game.playerA) ? game.playerB : game.playerA;
         game.sendBackToCheckpoint(toKill.getPlayer());
-        toKill.sendMessage(ChatColor.RED + "Dein Gegner hat dich mit " + name + " getötet.");
+        toKill.sendMessage(ChatColor.RED + "Your enemy killed your using " + name + ".");
         toKill.getPlayer().playSound(toKill.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_HURT, 10,10);
-        sender.sendMessage(ChatColor.GREEN + "Du hast deinen Gegner getötet!");
+        sender.sendMessage(ChatColor.GREEN + "Your enemy have been killed!");
         sender.playSound(sender.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 10);
     }
 }

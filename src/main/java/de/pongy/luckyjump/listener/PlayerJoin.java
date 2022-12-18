@@ -16,7 +16,7 @@ public class PlayerJoin implements Listener {
         event.setJoinMessage(null);
         if (LuckyJump.getInstance().actualPhase instanceof Lobby && LobbyConfig.autostart && LuckyJump.getInstance().actualPhase.players.size() < Lobby.maxPlayers) {
             LuckyJump.getInstance().lobby.addPlayer(new LuckyJumpPlayer(event.getPlayer()));
-        } else {        // add spectator in this case
+        } else if (LuckyJump.getInstance().game != null) {  // game is configured and player will join as spectator
             Spectator.addPlayer(event.getPlayer());
         }
     }

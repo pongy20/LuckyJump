@@ -10,13 +10,13 @@ import org.bukkit.entity.Player;
 public class BackToCheckpoint extends LuckyItem {
 
     public BackToCheckpoint() {
-        super("zurück zum Checkpoint", false);
+        super("back to checkpoint", false);
     }
 
     @Override
     public void giveItem(Player player) {
         player.sendMessage(ChatColor.RED + "You got unlucky!");
-        player.sendMessage(ChatColor.DARK_RED + "Du wurdest zurück zum Checkpoint gesendet!");
+        player.sendMessage(ChatColor.DARK_RED + "You've been teleported back to checkpoint.");
         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10, 10);
         Game game = LuckyJump.getInstance().game;
         game.sendBackToCheckpoint(player);

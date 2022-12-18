@@ -16,6 +16,8 @@ public class GameConfig extends Config {
     public static boolean gameCancelEnabled;
     public static int gameCancelTime;
     public static Location spawnA, spawnB, spectator;
+    public static boolean useBungeeCord;
+    public static String hubServerName;
 
     public GameConfig() {
         super("plugins/LuckyJump", "GameConfig.yml");
@@ -31,11 +33,13 @@ public class GameConfig extends Config {
         cfg.addDefault("checkpoint-material", "HEAVY_WEIGHTED_PRESSURE_PLATE");
         cfg.addDefault("win-checkpoint-material", "LIGHT_WEIGHTED_PRESSURE_PLATE");
         cfg.addDefault("coins-per-checkpoint", 20);
-        cfg.addDefault("reset-Y", 55);
+        cfg.addDefault("reset-Y", -5);
         cfg.addDefault("server-reload-time", 10);
         cfg.addDefault("game_cancel_enabled", true);
         cfg.addDefault("game_cancel_time", 300);
         cfg.addDefault("use_stats", true);
+        cfg.addDefault("use_bungeecord", false);
+        cfg.addDefault("bungee_target_servername", "Lobby");
 
         saveConfig(cfg);
     }
@@ -57,5 +61,7 @@ public class GameConfig extends Config {
         gameCancelEnabled = cfg.getBoolean("game_cancel_enabled");
         gameCancelTime = cfg.getInt("game_cancel_time");
         useStats = cfg.getBoolean("use_stats");
+        useBungeeCord = cfg.getBoolean("use_bungeecord");
+        hubServerName = cfg.getString("bungee_target_servername");
     }
 }

@@ -1,5 +1,6 @@
 package de.pongy.luckyjump;
 
+import de.pongy.luckyjump.bungee.BungeeConnector;
 import de.pongy.luckyjump.command.*;
 import de.pongy.luckyjump.config.GameConfig;
 import de.pongy.luckyjump.config.LobbyConfig;
@@ -15,10 +16,12 @@ import de.pongy.luckyjump.listener.PlayerLeave;
 import de.pongy.luckyjump.specialitems.luckyitems.*;
 import de.pongy.luckyjump.specialitems.unluckyitems.*;
 import de.pongy.luckyjump.stats.StatsSQL;
+import de.pongy.luckyjump.utils.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public final class LuckyJump extends JavaPlugin {
 
@@ -55,7 +58,7 @@ public final class LuckyJump extends JavaPlugin {
                 System.out.println();
                 Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "SQL-Connection can't be established - check your sql-config: /plugins/LuckyJump/SQL.yml");
                 Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "If you don't want to use SQL, disable 'use_stats' in /plugins/LuckyJump/GameConfig.yml!");
-                Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Plugin have been disabled. You have to fix this error.");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Plugin have been disabled. You have to fix this error. Reload the server afterwards.");
                 System.out.println();
                 Bukkit.getPluginManager().disablePlugin(Bukkit.getPluginManager().getPlugin("LuckyJump"));      // disabling the plugin in this case
                 return;
@@ -63,11 +66,17 @@ public final class LuckyJump extends JavaPlugin {
         }
 
         if (LobbyConfig.lobbySpawn != null && GameConfig.spawnA != null && GameConfig.spawnB != null && GameConfig.spectator != null) {
-            lobby = new Lobby(LobbyConfig.lobbySpawn);
-            game = new Game();
-            gameCancel = new GameCancel(GameConfig.gameCancelTime);
-            actualPhase = lobby;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Lucky Jump have been started successfully!");
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    lobby = new Lobby(LobbyConfig.lobbySpawn);
+                    game = new Game();
+                    gameCancel = new GameCancel(GameConfig.gameCancelTime);
+                    actualPhase = lobby;
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Lucky Jump have been started successfully!");
+                }
+            }.runTask(this);
+
         } else {
             System.out.println();
             Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Game is not completely configured!");
@@ -77,11 +86,19 @@ public final class LuckyJump extends JavaPlugin {
 
         registerEvents();
         registerCommands();
+
+        if (GameConfig.useBungeeCord) {
+            getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        }
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        // despawn all spawned holograms
+        for (Hologram hologram : Hologram.holograms) {
+            hologram.despawn();
+        }
+        Bukkit.getScheduler().cancelTasks(this);
     }
     private void registerEvents() {
         PluginManager manager = Bukkit.getPluginManager();
@@ -108,13 +125,13 @@ public final class LuckyJump extends JavaPlugin {
         this.getCommand("setspawn").setExecutor(new SpawnCommand());
         this.getCommand("configure").setExecutor(new ConfigureCommand());
         this.getCommand("stats").setExecutor(new StatsCommand());
+        this.getCommand("hologram").setExecutor(new HologramCommand());
     }
     private boolean registerSQL() {
         try {
             StatsSQL.getInstance().sql.connect();
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "SQL-Connection have to be configured in sql-Config file!");
-            e.printStackTrace();
             return false;
         }
         StatsSQL.getInstance().createTable();

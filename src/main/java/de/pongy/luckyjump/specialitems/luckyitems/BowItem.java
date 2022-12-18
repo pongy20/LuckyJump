@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class BowItem extends LuckyItem {
 
     public BowItem() {
-        super("Der ultimative Bogen", true);
+        super("Ultimate Bow", true);
     }
 
     @Override

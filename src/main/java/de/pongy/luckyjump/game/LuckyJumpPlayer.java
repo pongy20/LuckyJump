@@ -56,7 +56,7 @@ public class LuckyJumpPlayer {
         }
     }
     public void sendCoinsAmount() {
-        sendMessage(ChatColor.GREEN + "Du hast in dieser Runde " + coins + " coins verdient!");
+        sendMessage(ChatColor.GREEN + "You've earned " + coins + " coins is this game!");
     }
     public void makePlayerPlayable() {
         clearInventory();

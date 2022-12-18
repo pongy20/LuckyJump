@@ -38,7 +38,7 @@ public class Lobby extends GamePhase {
         if (players.contains(player))
             return;
         if (players.size() > maxPlayers) {
-            player.getPlayer().kickPlayer("Spiel ist voll!"); //TODO: have to be replaced with sending back to lobby
+            player.getPlayer().kickPlayer("Game is full!"); //TODO: have to be replaced with sending back to lobby
             return;
         }
         super.addPlayer(player);

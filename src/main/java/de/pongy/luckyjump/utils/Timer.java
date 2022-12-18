@@ -71,7 +71,7 @@ public class Timer {
     }
     private void sendTimerMessage() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED.toString() + ChatColor.BOLD + "Zeit: " + getTimerTime()));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED.toString() + ChatColor.BOLD + "Time: " + getTimerTime()));
         }
     }
 }

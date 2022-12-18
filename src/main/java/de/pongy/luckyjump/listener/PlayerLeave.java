@@ -13,11 +13,14 @@ public class PlayerLeave  implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (LuckyJump.getInstance().actualPhase.containsPlayer(event.getPlayer())) {
+        if (LuckyJump.getInstance().actualPhase != null && LuckyJump.getInstance().actualPhase.containsPlayer(event.getPlayer())) {
             LuckyJump.getInstance().actualPhase.removePlayer(event.getPlayer());
 
             if (LuckyJump.getInstance().actualPhase instanceof Game) {      // check if the other player won
                 Game game = LuckyJump.getInstance().game;
+                if (game.ended) {   // game already ended and existing players just get kicked of server
+                    return;
+                }
                 Player winner;
                 if (game.playerA.getPlayer().getName().equalsIgnoreCase(player.getName())) {
                     winner = game.playerA.getPlayer();

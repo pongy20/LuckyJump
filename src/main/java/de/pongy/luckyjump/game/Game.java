@@ -1,6 +1,7 @@
 package de.pongy.luckyjump.game;
 
 import de.pongy.luckyjump.LuckyJump;
+import de.pongy.luckyjump.bungee.BungeeConnector;
 import de.pongy.luckyjump.config.GameConfig;
 import de.pongy.luckyjump.config.LobbyConfig;
 import de.pongy.luckyjump.language.LanguageConfig;
@@ -9,10 +10,8 @@ import de.pongy.luckyjump.language.MessageKeys;
 import de.pongy.luckyjump.language.PlaceholderPrefabs;
 import de.pongy.luckyjump.stats.StatsService;
 import de.pongy.luckyjump.utils.Timer;
-import de.pongy.luckyjump.utils.WinnersHologram;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import sun.plugin2.message.Message;
 
 public class Game extends GamePhase {
 
@@ -76,6 +75,7 @@ public class Game extends GamePhase {
         lPlayer.stats.addFellOff();
         Location toTeleport = lPlayer.equals(playerA) ? checkpointA.clone() : checkpointB.clone();
         toTeleport.setPitch(player.getLocation().getPitch());
+        toTeleport.setYaw(player.getLocation().getYaw());
         player.teleport(toTeleport);
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 10);
     }
@@ -105,8 +105,10 @@ public class Game extends GamePhase {
         // send messages and play sound
         LanguagePlaceholder playerPlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.PLAYER.getName(), player.getName());
         sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.GAME_WON.getKey(), playerPlaceholder));
-        playerA.sendCoinsAmount();
-        playerB.sendCoinsAmount();
+
+        // Currently coins are not used in lucky jump
+        //playerA.sendCoinsAmount();
+        //playerB.sendCoinsAmount();
         //TODO: add Coins to database
 
         // update stats
@@ -116,7 +118,7 @@ public class Game extends GamePhase {
         playSound(Sound.ENTITY_ENDER_DRAGON_GROWL, 10);
         // teleport lobby
         Location lobbyLoc = LuckyJump.getInstance().lobby.getSpawn();
-        Bukkit.getScheduler().runTaskAsynchronously(LuckyJump.getInstance(), new Runnable() {
+        Bukkit.getScheduler().runTask(LuckyJump.getInstance(), new Runnable() {
             @Override
             public void run() {
                 playerA.getPlayer().teleport(lobbyLoc);
@@ -132,8 +134,12 @@ public class Game extends GamePhase {
             @Override
             public void run() {
                 for (Player all : Bukkit.getOnlinePlayers()) {
-                    //TODO: rework
-                    all.kickPlayer("Spiel wurde beendet!\n" + player.getName() + " hat das Spiel gewonnen!");
+                    if (GameConfig.useBungeeCord) {
+                        BungeeConnector.sendPlayerBackToHub(all);
+                    } else {
+                        LanguagePlaceholder placeholder = new LanguagePlaceholder(PlaceholderPrefabs.PLAYER.getName(), player.getName());
+                        all.kickPlayer(LanguageConfig.getInstance().getMessage(MessageKeys.GAME_WON.getKey(), placeholder));
+                    }
                 }
                 Bukkit.getServer().reload();
                 //TODO: reset world...
@@ -173,6 +179,9 @@ public class Game extends GamePhase {
     private void playSound(final Sound sound, final int volume) {
         for (LuckyJumpPlayer player : players) {
             player.getPlayer().playSound(player.getPlayer().getLocation(), sound, volume, 10);
+        }
+        for (Player player : Spectator.spectators) {
+            player.playSound(player.getLocation(), sound, volume, 10);
         }
     }
 

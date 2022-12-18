@@ -1,6 +1,8 @@
 package de.pongy.luckyjump.game;
 
 import de.pongy.luckyjump.LuckyJump;
+import de.pongy.luckyjump.language.LanguageConfig;
+import de.pongy.luckyjump.language.MessageKeys;
 import de.pongy.luckyjump.utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,7 +14,7 @@ import java.util.List;
 
 public class Spectator {
 
-    private static List<Player> spectators = new ArrayList<>();
+    public static List<Player> spectators = new ArrayList<>();
 
     public static void addPlayer(Player player) {
            spectators.add(player);
@@ -25,7 +27,7 @@ public class Spectator {
            player.setExp(0);
            player.getInventory().clear();
            player.getInventory().setArmorContents(null);
-           player.sendMessage(Messages.prefix + ChatColor.GREEN.toString() + "Du hast den Zuschauermodus betreten!");
+           player.sendMessage(LanguageConfig.getInstance().getMessage(MessageKeys.SPECTATORMODE_JOINED.getKey()));
 
     }
     public static boolean isSpectator(Player player) {

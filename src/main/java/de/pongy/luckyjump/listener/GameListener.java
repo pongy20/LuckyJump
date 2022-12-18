@@ -33,12 +33,12 @@ public class GameListener implements Listener {
             return;
         }
         // catch checkpoint
-        if (player.getLocation().getBlock().getType().equals(Game.checkpointMaterial)) {
+        if (player.getLocation().getBlock().getType().equals(Game.checkpointMaterial) && !game.ended) {
             game.updateCheckpoint(player, player.getLocation());
             return;
         }
         // catch win
-        if (player.getLocation().getBlock().getType().equals(Game.winCheckpointMaterial)) {
+        if (player.getLocation().getBlock().getType().equals(Game.winCheckpointMaterial) && !game.ended) {
             game.winGame(player);
         }
     }
@@ -86,9 +86,9 @@ public class GameListener implements Listener {
     }
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent event) {
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "weather clear");
-        event.getWorld().setClearWeatherDuration(Integer.MAX_VALUE);
-        event.getWorld().setWeatherDuration(Integer.MAX_VALUE);
+        event.getWorld().setStorm(false);
+        event.getWorld().setThundering(false);
+        event.setCancelled(true);
     }
     @EventHandler
     public void onMobSpawn(EntitySpawnEvent event) {

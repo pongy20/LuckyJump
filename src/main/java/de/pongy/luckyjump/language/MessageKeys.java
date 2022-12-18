@@ -14,7 +14,12 @@ public enum MessageKeys {
     CHECKPOINT_REACHED("checkpoint_reached"),
     COINS_RECEIVED("coins_received"),
     GAME_WON("game_won"),
-    GAME_CANCELED_COUNTDOWN("game_canceled_countdown");
+    GAME_CANCELED_COUNTDOWN("game_canceled_countdown"),
+    STATS_HOLOGRAM_HEADER("stats_hologram_header"),
+    RANDOM_WINNER_WARNING("random_winner_warning"),
+    GAME_CANCEL_RANDOM_WINNER("game_cancel_random_winner"),
+    SPECTATORMODE_JOINED("spectatormode_joined"),
+    GAME_START_COUNTDOWN("game_start_countdown");
 
     private String key;
 

@@ -24,7 +24,7 @@ public class FreezeEnemyItem extends LuckyItem implements Listener {
     public static List<Player> freezedPlayers = new ArrayList<>();
 
     public FreezeEnemyItem() {
-        super("Gegner einfrieren Item", true);
+        super("Freeze Enemy", true);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class FreezeEnemyItem extends LuckyItem implements Listener {
         super.giveItem(player);
         ItemStack freezeItem = new ItemStack(Material.ICE);
         ItemMeta meta = freezeItem.getItemMeta();
-        meta.setDisplayName("Klicke um deinen Gegner einzufrieren!");
+        meta.setDisplayName("Click to freeze your enemy!");
         freezeItem.setItemMeta(meta);
         player.getInventory().addItem(freezeItem);
     }
@@ -59,13 +59,13 @@ public class FreezeEnemyItem extends LuckyItem implements Listener {
         LuckyJumpPlayer lSender = game.getPlayer(sender);
         LuckyJumpPlayer toFreeze = lSender.equals(game.playerA) ? game.playerB : game.playerA;
         if (freezedPlayers.contains(toFreeze.getPlayer())) {
-            sender.sendMessage(ChatColor.RED + "Dein Gegner ist bereits eingefroren!");
+            sender.sendMessage(ChatColor.RED + "Your enemy is already frozen!");
             return;
         }
         freezedPlayers.add(toFreeze.getPlayer());
-        toFreeze.sendMessage(ChatColor.RED + "Dein Gegner hat dich eingefroren!");
+        toFreeze.sendMessage(ChatColor.RED + "You have been frozen by your enemy!");
         toFreeze.getPlayer().setAllowFlight(true);
-        sender.sendMessage(ChatColor.GREEN + "Dein Gegner wurde eingefroren!");
+        sender.sendMessage(ChatColor.GREEN + "Your enemy is now frozen");
         sender.playSound(sender.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 10);
         Bukkit.getScheduler().runTaskLater(LuckyJump.getInstance(), new Runnable() {
             @Override

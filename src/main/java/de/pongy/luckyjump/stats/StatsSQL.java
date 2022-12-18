@@ -1,9 +1,9 @@
 package de.pongy.luckyjump.stats;
 
 import de.pongy.luckyjump.sql.SQL;
+import de.pongy.luckyjump.utils.UUIDConverter;
 import org.bukkit.Bukkit;
 
-import javax.xml.transform.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -121,7 +121,7 @@ public class StatsSQL {
                     " ORDER BY " + category.getSqlName() + " DESC LIMIT " + limit);
             ResultSet result = ps.executeQuery();
             while (result.next()) {
-                String playername = Bukkit.getOfflinePlayer(UUID.fromString(result.getString("uuid"))).getName();
+                String playername = UUIDConverter.getInstance().getUsernameByUUID(result.getString("uuid"));
                 int value = result.getInt(category.getSqlName());
                 stats.put(playername, value);
             }

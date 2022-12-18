@@ -1,6 +1,10 @@
 package de.pongy.luckyjump.utils;
 
 import de.pongy.luckyjump.LuckyJump;
+import de.pongy.luckyjump.language.LanguageConfig;
+import de.pongy.luckyjump.language.LanguagePlaceholder;
+import de.pongy.luckyjump.language.MessageKeys;
+import de.pongy.luckyjump.language.PlaceholderPrefabs;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -37,7 +41,8 @@ public class Countdown {
                 public void run() {
                     sendCountdown();
                     if (time == 15 || time == 10 || time <= 5 && time > 0) {
-                        LuckyJump.getInstance().lobby.sendGameMessage(ChatColor.GREEN + "Das Spiel startet in " + ChatColor.GOLD + time + ChatColor.GREEN + " Sekunden.");
+                        LanguagePlaceholder timePlaceholder = new LanguagePlaceholder(PlaceholderPrefabs.CURRENT_TIME.getName(), String.valueOf(time));
+                        LuckyJump.getInstance().lobby.sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.GAME_START_COUNTDOWN.getKey(), timePlaceholder));
                     }
                     if (time <= 3 && time > 0) {
                         playSoundForAll(Sound.BLOCK_NOTE_BLOCK_BASS);
@@ -65,9 +70,9 @@ public class Countdown {
                 if (time <= 0) {
                     player.spigot().sendMessage(messageType, new TextComponent(ChatColor.RED.toString() + ChatColor.BOLD + "The game is about to start"));
                 } else
-                    player.spigot().sendMessage(messageType, new TextComponent(ChatColor.RED.toString() +  ChatColor.BOLD + "Das Spiel startet in " + getConvertedTime()));
+                    player.spigot().sendMessage(messageType, new TextComponent(ChatColor.RED.toString() +  ChatColor.BOLD + "Game will start in " + getConvertedTime()));
             } else
-                player.spigot().sendMessage(messageType, new TextComponent(ChatColor.RED + "Countdown wurde pausiert..."));
+                player.spigot().sendMessage(messageType, new TextComponent(ChatColor.RED + "Countdown have been paused..."));
         }
     }
     public void playSoundForAll(Sound sound) {

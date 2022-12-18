@@ -22,12 +22,12 @@ public class Stats {
     }
 
     public void printStats(CommandSender target) {
-        target.sendMessage(ChatColor.RED + "Stats von " + ChatColor.GOLD + playername);
-        target.sendMessage(ChatColor.YELLOW + "Gespielte Spiele: " + ChatColor.GOLD + games);
-        target.sendMessage(ChatColor.YELLOW + "Gewonnene Spiele: " + ChatColor.GOLD + wins);
-        target.sendMessage(ChatColor.YELLOW + "Anzahl der Sprünge: " + ChatColor.GOLD + jumps);
-        target.sendMessage(ChatColor.YELLOW + "Checkpoints erreicht: " + ChatColor.GOLD + checkpointsHit);
-        target.sendMessage(ChatColor.YELLOW + "Runtergefallen: " + ChatColor.GOLD + fellOff);
+        target.sendMessage(ChatColor.RED + "Stats of: " + ChatColor.GOLD + playername);
+        target.sendMessage(ChatColor.YELLOW + "Played games: " + ChatColor.GOLD + games);
+        target.sendMessage(ChatColor.YELLOW + "Wins: " + ChatColor.GOLD + wins);
+        target.sendMessage(ChatColor.YELLOW + "Jumps: " + ChatColor.GOLD + jumps);
+        target.sendMessage(ChatColor.YELLOW + "Checkpoints reached: " + ChatColor.GOLD + checkpointsHit);
+        target.sendMessage(ChatColor.YELLOW + "Fails: " + ChatColor.GOLD + fellOff);
     }
 
     public String getPlayername() {

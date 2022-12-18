@@ -7,6 +7,7 @@ import de.pongy.luckyjump.language.MessageKeys;
 import de.pongy.luckyjump.language.PlaceholderPrefabs;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -19,7 +20,7 @@ public class GameCancel {
     public List<Integer> alerts = Arrays.asList(1,2,3,5,10,30,60,120);
 
     private final int cancelTime;
-    private Timer timer;
+    private BukkitRunnable runnable;
     private boolean running;
     private int currentTime;
 
@@ -28,9 +29,8 @@ public class GameCancel {
         currentTime = cancelTime;
     }
     public void startCancelCountdown() {
-        if (timer == null || !running) {
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
+        if (runnable == null || !running) {
+            runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
                     currentTime--;
@@ -42,7 +42,8 @@ public class GameCancel {
                         cancelGame();       // cancels the time too
                     }
                 }
-            }, 0, 1000);
+            };
+            runnable.runTaskTimer(LuckyJump.getInstance(), 0, 20);
             running = true;
         }
     }
@@ -51,15 +52,15 @@ public class GameCancel {
         return LanguageConfig.getInstance().getMessage(MessageKeys.GAME_CANCELED_COUNTDOWN.getKey(), languagePlaceholder);
     }
     private String getWarningMessage() {
-        return ChatColor.YELLOW.toString() + ChatColor.BOLD + "A random winner will be chosen!";
+        return LanguageConfig.getInstance().getMessage(MessageKeys.RANDOM_WINNER_WARNING.getKey());
     }
     /**
      * May have to be called when server reloads
      */
     public void stopCancelCountdown() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
+        if (runnable != null) {
+            runnable.cancel();
+            runnable = null;
             running = false;
         }
     }
@@ -74,7 +75,7 @@ public class GameCancel {
             winningPlayer = LuckyJump.getInstance().game.playerB.getPlayer();
         }
         stopCancelCountdown();
-        LuckyJump.getInstance().game.sendGameMessage(ChatColor.RED.toString() + ChatColor.BOLD.toString() + ChatColor.UNDERLINE + "Das Spiel wird abgebrochen, es wird ein zufälliger Sieger ermittelt.");
+        LuckyJump.getInstance().game.sendGameMessage(LanguageConfig.getInstance().getMessage(MessageKeys.GAME_CANCEL_RANDOM_WINNER.getKey()));
         LuckyJump.getInstance().game.winGame(winningPlayer);
     }
 

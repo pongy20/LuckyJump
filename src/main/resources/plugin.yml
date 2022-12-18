@@ -25,3 +25,7 @@ commands:
   stats:
     description: Command to see the stats of a player
     usage: /stats (target-player)
+  hologram:
+    description: Command to remove holograms
+    permission: luckyjump.admin
+    usage: /hologram clear

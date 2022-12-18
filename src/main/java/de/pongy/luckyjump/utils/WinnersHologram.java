@@ -1,5 +1,8 @@
 package de.pongy.luckyjump.utils;
 
+import de.pongy.luckyjump.LuckyJump;
+import de.pongy.luckyjump.language.LanguageConfig;
+import de.pongy.luckyjump.language.MessageKeys;
 import de.pongy.luckyjump.stats.StatsCategory;
 import de.pongy.luckyjump.stats.StatsService;
 import org.bukkit.ChatColor;
@@ -21,11 +24,11 @@ public class WinnersHologram extends Hologram {
         lines.clear();
         TreeMap<String, Integer> wins = StatsService.getInstance().getBestStats(StatsCategory.WINS, 5);
         if (wins == null || wins.isEmpty()) {
-            System.out.println("Unable to load wins!");
+            LuckyJump.getInstance().getLogger().info("Unable to load wins!");
             return;
         }
         int index = 1;
-        addLine(ChatColor.RED + "Beste Spieler (Wins):");
+        addLine(LanguageConfig.getInstance().getMessage(MessageKeys.STATS_HOLOGRAM_HEADER.getKey()));
         addLine(" ");
         List<Map.Entry<String, Integer>> sortedResult = new ArrayList<>(wins.entrySet());
         sortedResult.sort(Map.Entry.comparingByValue());
